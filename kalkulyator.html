@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Калькулятор переобувки · Шиномонтаж «Зимник» (демо)</title>
+<meta name="description" content="Посчитайте стоимость сезонной смены колёс или перебортовки шин и запишитесь. Демонстрационный проект, цены учебные.">
+<style>
+
+:root{--bg:#f2f4f6;--card:#ffffff;--card2:#f8f9fa;--ink:#15191e;--mut:#5b6470;--line:#dfe3e8;--line2:#c3c9d1;
+  --acc:#c2410c;--accbg:#fff1e8;--ok:#15803d;--bad:#b91c1c}
+@media (prefers-color-scheme:dark){:root{--bg:#111418;--card:#1a1f25;--card2:#20262d;--ink:#eef1f4;--mut:#a3adb8;--line:#2c333b;--line2:#46505b;
+  --acc:#fb923c;--accbg:#3a2416;--ok:#4ade80;--bad:#f87171}}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;overflow-x:hidden}
+a{color:var(--acc)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+@media(max-width:560px){.wrap{padding:0 16px}}
+nav{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;height:64px}
+.logo{font-weight:800;font-size:20px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.logo span{color:var(--acc)}
+.navl{display:flex;gap:18px;align-items:center;font-size:15px}
+.navl a{color:var(--ink);text-decoration:none}
+@media(max-width:560px){.navl .hide{display:none}}
+h1{font-size:clamp(34px,6.5vw,58px);line-height:1.05;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--acc)}
+.head{padding-top:36px;padding-bottom:18px}
+.lead{font-size:18px;color:var(--mut);margin-top:14px;max-width:620px}
+.demo{display:inline-block;margin-top:16px;font-size:13px;font-weight:600;color:var(--acc);border:1.5px dashed var(--acc);border-radius:8px;padding:5px 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px}
+.btn{display:inline-block;background:var(--acc);color:#fff;font:inherit;font-weight:700;font-size:16px;border:0;border-radius:12px;padding:13px 22px;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line2)}
+.btn.wide{width:100%}
+.tglink{display:block;text-align:center;margin-top:14px;font-size:14px}
+footer{border-top:1px solid var(--line);padding:24px 0 36px;font-size:13px;color:var(--mut)}
+footer p{margin:4px 0}
+
+.calc{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start;padding:8px 0 64px}
+.calc>*{min-width:0}
+@media(max-width:860px){.calc{grid-template-columns:1fr}}
+.q{padding:20px 22px;border-bottom:1px solid var(--line)}
+.q:last-child{border-bottom:0}
+.q h2{font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;display:flex;gap:10px}
+.q h2 b{color:var(--acc)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:inline-block;border:2px solid var(--line2);border-radius:10px;padding:10px 14px;font-size:16px;cursor:pointer;background:var(--card2);line-height:1.25}
+.chip span small{display:block;font-size:12px;color:var(--mut);margin-top:2px}
+.chip input:checked+span{border-color:var(--acc);background:var(--accbg)}
+.chip input:focus-visible+span{outline:3px solid var(--acc);outline-offset:2px}
+.chip[hidden]{display:none}
+.ex{display:flex;gap:12px;align-items:flex-start;padding:8px 0;cursor:pointer;font-size:16px}
+.ex input{width:22px;height:22px;accent-color:var(--acc);flex:none;margin-top:1px}
+.ex small{color:var(--mut);display:block;font-size:13px}
+.hint{font-size:13px;color:var(--mut);margin-top:10px}
+.res{position:sticky;top:84px}
+@media(max-width:860px){.res{position:static}}
+.price{padding:22px;border-bottom:1px solid var(--line)}
+.lbl{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.sum{font-size:clamp(34px,7vw,44px);font-weight:800;color:var(--acc);margin:6px 0 2px;font-variant-numeric:tabular-nums}
+.sum.empty{font-size:18px;font-weight:500;color:var(--mut)}
+.lines{margin-top:12px;display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:14px}
+.lines span:nth-child(2n){text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.warn{font-size:13px;color:var(--mut);margin-top:12px}
+form{padding:20px 22px}
+form h3{font-size:18px;margin-bottom:12px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
+.field input{width:100%;font:inherit;font-size:16px;border:2px solid var(--line2);border-radius:10px;background:var(--card2);color:var(--ink);padding:10px 12px}
+.chk{display:flex;gap:10px;font-size:13px;margin:10px 0;align-items:flex-start;cursor:pointer}
+.chk input{width:18px;height:18px;flex:none;margin-top:1px;accent-color:var(--acc)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.msg{font-size:14px;margin-top:12px;min-height:1em}
+.msg.ok{color:var(--ok);font-weight:600}.msg.err{color:var(--bad);font-weight:600}
+.bar{display:none}
+@media(max-width:860px){
+  .bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;justify-content:space-between;align-items:center;gap:12px;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--ink);color:var(--bg);text-decoration:none;transition:transform .2s}
+  .bar.off{transform:translateY(110%)}
+  .bar b{font-size:22px;color:var(--acc)}
+  footer{padding-bottom:90px}
+}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="index.html">🛞 Зимник<span>.</span></a>
+  <div class="navl"><a class="hide" href="index.html#prices">Цены</a><a href="kalkulyator.html">Калькулятор</a><a href="https://t.me/zimnik_demo_bot" target="_blank" rel="noopener">Telegram</a></div>
+</div></nav>
+
+<header class="wrap head">
+  <h1>Сколько стоит <em>переобуть</em> машину</h1>
+  <p class="lead">Выберите машину, радиус и что нужно сделать — цена появится сразу. Записаться можно тут же.</p>
+  <div class="demo" data-demo>Демо-проект: шиномонтаж вымышленный, цены учебные</div>
+</header>
+
+<main class="wrap calc">
+  <div class="card" id="calc">
+    <div class="q"><h2><b>1</b>Машина</h2><div class="chips" data-group="vehicle"></div></div>
+    <div class="q"><h2><b>2</b>Радиус колёс</h2><div class="chips" data-group="radius"></div>
+      <p class="hint">Радиус написан на боковине шины: например, 205/55 <b>R16</b>.</p></div>
+    <div class="q"><h2><b>3</b>Что сделать</h2><div class="chips" data-group="service"></div></div>
+    <div class="q"><h2><b>4</b>Дополнительно</h2><div id="extras"></div></div>
+  </div>
+
+  <aside class="card res">
+    <div class="price" aria-live="polite">
+      <div class="lbl">Стоимость за 4 колеса</div>
+      <div class="sum empty" id="sum"></div>
+      <div class="lines" id="lines"></div>
+      <p class="warn">Цена ориентировочная: точную назовёт мастер, когда посмотрит колёса. <span data-demo>Цены учебные — для демонстрации.</span></p>
+    </div>
+    <form id="lead" novalidate>
+      <h3>Записаться на эту цену</h3>
+      <div class="field"><label for="f-name">Имя</label><input id="f-name" name="name" autocomplete="name" maxlength="100"></div>
+      <div class="field"><label for="f-phone">Телефон</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" placeholder="+7 900 123-45-67"></div>
+      <div class="field"><label for="f-when">Когда удобно (необязательно)</label><input id="f-when" name="when" maxlength="300" placeholder="например, суббота утром"></div>
+      <div class="hp" aria-hidden="true"><label>Сайт <input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <label class="chk"><input type="checkbox" id="agree"><span>Согласен(на) на обработку имени и телефона для записи, <a href="politika.html">политика</a>.</span></label>
+      <button class="btn wide" type="submit" id="send">Отправить заявку</button>
+      <p class="msg" id="msg" role="status"></p>
+      <a class="tglink" id="tg" target="_blank" rel="noopener">Удобнее в Telegram ✈</a>
+    </form>
+  </aside>
+</main>
+
+<a class="bar off" id="bar" href="#lead"><b id="barSum"></b><span>К записи ↓</span></a>
+<footer><div class="wrap">
+  <p><b>Шиномонтаж «Зимник» — демонстрационный проект</b> для портфолио. Такого шиномонтажа нет, адреса и телефона нет.</p>
+  <p>Цены учебные: из открытого прайса шиномонтажа «Шинкоff» (Санкт-Петербург, zoon.ru) и обзора цен на хранение шин (finuslugi.ru, 13.10.2026). Не являются публичной офертой.</p>
+  <p>Заявки с сайта и из бота приходят разработчику для проверки работы. <a href="politika.html">Политика обработки данных</a>.</p>
+</div></footer>
+
+<script>
+// =====================================================================
+// ДЕМО-ШИНОМОНТАЖ «ЗИМНИК» · ЦЕНЫ И РАСЧЁТ — ОДИН ФАЙЛ НА ДВОИХ
+// Читают и калькулятор (вставляется при сборке), и бот (пересчитывает сумму сам).
+// Цены УЧЕБНЫЕ: прайс шиномонтажа «Шинкоff» (СПб, zoon.ru) + хранение по finuslugi.ru.
+// Источники — istochniki-cen.md. Поменяли цену → пересобрать сайт и задеплоить бота.
+// =====================================================================
+const CONFIG = {
+  DEMO: true,         // плашка «цены учебные, для демонстрации»
+  LEAD_URL: "https://shina-zimnik-demo-bot.oa310524.workers.dev/lead",       // адрес бота для заявок, подставляется при сборке сайта
+  BOT: "https://t.me/zimnik_demo_bot",            // ссылка на бота, подставляется при сборке сайта
+
+  // тип машины
+  vehicle: [
+    { k: "car",   name: "Легковой" },
+    { k: "cross", name: "Кроссовер / паркетник" },
+    { k: "suv",   name: "Внедорожник / микроавтобус" },
+  ],
+  // радиус колеса
+  radius: [
+    { k: "r13", name: "R13–14" },
+    { k: "r15", name: "R15–16" },
+    { k: "r17", name: "R17–18" },
+    { k: "r20", name: "R20–22" },
+    { k: "r14_19", name: "R14–19" },   // для внедорожников в прайсе одна строка
+  ],
+  // что сделать с колёсами
+  service: [
+    { k: "swap",  name: "Сменить колёса на дисках", note: "снять-поставить и отбалансировать 4 колеса" },
+    { k: "mount", name: "Перебортовать шины",       note: "снять шины с дисков, поставить другие, отбалансировать 4 колеса" },
+  ],
+  // цены за 4 колеса, ₽ — только сочетания, которые есть в прайсе-источнике
+  price: {
+    swap: {
+      car:   { r13: 1200, r15: 1400, r17: 1600, r20: 2400 },
+      cross: {            r15: 1600, r17: 1800 },
+      suv:   { r14_19: 2200 },
+    },
+    mount: {
+      car:   { r13: 1800, r15: 2200, r17: 2600, r20: 4400 },
+      cross: {            r15: 2400, r17: 2800 },
+      suv:   { r14_19: 3400 },
+    },
+  },
+  // дополнительно
+  extras: [
+    { k: "storage", name: "Хранение шин до следующего сезона", price: 4000, per: "комплект" },
+    { k: "bags",    name: "Пакеты для колёс",                  price: 40,   per: "шт", qty: 4 },
+    { k: "valves",  name: "Новые вентили",                     price: 100,  per: "шт", qty: 4 },
+  ],
+  defaults: { vehicle: "car", radius: null, service: "swap", extras: [] },
+};
+
+// какие радиусы доступны для типа машины (остальные скрываются)
+function radiiFor(vehicle, C) {
+  return Object.keys((C.price.swap[vehicle]) || {});
+}
+
+// расчёт: цена из таблицы + допуслуги. Возвращает null, если сочетания нет в прайсе.
+function calc(s, C) {
+  const table = C.price[s.service] && C.price[s.service][s.vehicle];
+  if (!table) return null;
+  const base = table[s.radius];
+  if (!base) return null;                                    // радиус не выбран или такого в прайсе нет
+  const lines = [{ name: C.service.find((o) => o.k === s.service).name, sum: base }];
+  for (const k of s.extras || []) {
+    const e = C.extras.find((x) => x.k === k);
+    if (!e) return null;                                     // неизвестная допуслуга
+    lines.push({ name: e.name, sum: e.price * (e.qty || 1), qty: e.qty || 1, unit: e.price });
+  }
+  const total = lines.reduce((a, l) => a + l.sum, 0);
+  return { base, lines, total };
+}
+
+
+// ================= ИНТЕРФЕЙС =================
+const state = JSON.parse(JSON.stringify(CONFIG.defaults));
+const $ = (id) => document.getElementById(id);
+const rub = (n) => n.toLocaleString("ru-RU") + " ₽";
+
+function build() {
+  for (const g of ["vehicle", "radius", "service"]) {
+    const box = document.querySelector(`[data-group="${g}"]`);
+    box.innerHTML = CONFIG[g].map((o) =>
+      `<label class="chip" data-k="${o.k}"><input type="radio" name="${g}" value="${o.k}"><span>${o.name}${o.note ? `<small>${o.note}</small>` : ""}</span></label>`).join("");
+    box.addEventListener("change", (e) => { state[g] = e.target.value; render(); });
+  }
+  $("extras").innerHTML = CONFIG.extras.map((e) =>
+    `<label class="ex"><input type="checkbox" value="${e.k}"><span>${e.name} — ${e.qty ? `${e.qty} × ${rub(e.price)}` : rub(e.price)}<small>${e.per === "комплект" ? "за комплект" : ""}</small></span></label>`).join("");
+  $("extras").addEventListener("change", () => {
+    state.extras = [...document.querySelectorAll("#extras input:checked")].map((i) => i.value); render();
+  });
+}
+
+function render() {
+  // радиусы, которых нет в прайсе для этого типа машины, скрываем
+  const ok = radiiFor(state.vehicle, CONFIG);
+  document.querySelectorAll('[data-group="radius"] .chip').forEach((c) => (c.hidden = !ok.includes(c.dataset.k)));
+  if (state.radius && !ok.includes(state.radius)) state.radius = ok.length === 1 ? ok[0] : null;
+  if (!state.radius && ok.length === 1) state.radius = ok[0];
+  for (const g of ["vehicle", "radius", "service"])
+    document.querySelectorAll(`[data-group="${g}"] input`).forEach((i) => (i.checked = i.value === state[g]));
+
+  const r = calc(state, CONFIG);
+  if (!r) {
+    $("sum").className = "sum empty"; $("sum").textContent = "Выберите радиус колёс"; $("lines").innerHTML = "";
+  } else {
+    $("sum").className = "sum"; $("sum").textContent = rub(r.total);
+    $("lines").innerHTML = r.lines.map((l) => `<span>${l.name}${l.qty > 1 ? ` (${l.qty} шт.)` : ""}</span><span>${rub(l.sum)}</span>`).join("");
+    $("barSum").textContent = rub(r.total);
+  }
+  bar();
+}
+
+let priceVisible = false;
+new IntersectionObserver((es) => { priceVisible = es[0].isIntersecting; bar(); }).observe(document.querySelector(".res"));
+function bar() { $("bar").classList.toggle("off", priceVisible || !calc(state, CONFIG)); }
+
+$("tg").href = CONFIG.BOT;
+document.querySelectorAll("[data-demo]").forEach((el) => (el.hidden = !CONFIG.DEMO));
+
+// ================= ЗАЯВКА → бот → Telegram владельца =================
+$("lead").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const f = e.target, msg = $("msg"), btn = $("send");
+  const say = (t, c) => { msg.textContent = t; msg.className = "msg " + (c || ""); };
+  const r = calc(state, CONFIG);
+  const name = f.name.value.trim(), phone = f.phone.value.trim();
+  if (!r) return say("Сначала выберите радиус колёс.", "err");
+  if (!name) return say("Напишите, как к Вам обращаться.", "err");
+  if ((phone.match(/\d/g) || []).length < 10) return say("Укажите телефон полностью, например +7 900 123-45-67.", "err");
+  if (!$("agree").checked) return say("Нужно согласие на обработку данных.", "err");
+  btn.disabled = true; btn.textContent = "Отправляю…"; say("");
+  try {
+    const res = await fetch(CONFIG.LEAD_URL, { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ ...state, total: r.total, name, phone, when: f.when.value.trim(), website: f.website.value }) });
+    const d = await res.json().catch(() => ({}));
+    if (res.status === 429) return say("Вы уже отправили несколько заявок. Мы перезвоним — или напишите в Telegram.", "err");
+    if (!res.ok || !d.ok) throw new Error(d.error || res.status);
+    say("Спасибо! Заявка принята ✅ Перезвоним в течение часа и подтвердим время.", "ok"); f.reset();
+  } catch (err) {
+    say("Не получилось отправить. Напишите нам в Telegram — кнопка ниже.", "err");
+  } finally { btn.disabled = false; btn.textContent = "Отправить заявку"; }
+});
+
+build();
+render();
+</script>
+</body>
+</html>

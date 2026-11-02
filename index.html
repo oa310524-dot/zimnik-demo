@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Шиномонтаж «Зимник» (демо) — смена колёс и хранение шин</title>
+<meta name="description" content="Демонстрационный сайт шиномонтажа: смена колёс, перебортовка шин, хранение. Калькулятор цены и запись через Telegram. Цены учебные.">
+<style>
+
+:root{--bg:#f2f4f6;--card:#ffffff;--card2:#f8f9fa;--ink:#15191e;--mut:#5b6470;--line:#dfe3e8;--line2:#c3c9d1;
+  --acc:#c2410c;--accbg:#fff1e8;--ok:#15803d;--bad:#b91c1c}
+@media (prefers-color-scheme:dark){:root{--bg:#111418;--card:#1a1f25;--card2:#20262d;--ink:#eef1f4;--mut:#a3adb8;--line:#2c333b;--line2:#46505b;
+  --acc:#fb923c;--accbg:#3a2416;--ok:#4ade80;--bad:#f87171}}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;overflow-x:hidden}
+a{color:var(--acc)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+@media(max-width:560px){.wrap{padding:0 16px}}
+nav{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;height:64px}
+.logo{font-weight:800;font-size:20px;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.logo span{color:var(--acc)}
+.navl{display:flex;gap:18px;align-items:center;font-size:15px}
+.navl a{color:var(--ink);text-decoration:none}
+@media(max-width:560px){.navl .hide{display:none}}
+h1{font-size:clamp(34px,6.5vw,58px);line-height:1.05;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--acc)}
+.head{padding-top:36px;padding-bottom:18px}
+.lead{font-size:18px;color:var(--mut);margin-top:14px;max-width:620px}
+.demo{display:inline-block;margin-top:16px;font-size:13px;font-weight:600;color:var(--acc);border:1.5px dashed var(--acc);border-radius:8px;padding:5px 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px}
+.btn{display:inline-block;background:var(--acc);color:#fff;font:inherit;font-weight:700;font-size:16px;border:0;border-radius:12px;padding:13px 22px;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line2)}
+.btn.wide{width:100%}
+.tglink{display:block;text-align:center;margin-top:14px;font-size:14px}
+footer{border-top:1px solid var(--line);padding:24px 0 36px;font-size:13px;color:var(--mut)}
+footer p{margin:4px 0}
+
+.hero{padding-top:44px;padding-bottom:36px;display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center}
+.hero>*{min-width:0}
+@media(max-width:860px){.hero{grid-template-columns:1fr}}
+.hero .art{justify-self:center;width:100%;max-width:300px}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+section{padding:40px 0;border-top:1px solid var(--line)}
+section h2{font-size:clamp(26px,4.5vw,36px);line-height:1.1;margin-bottom:8px}
+section .sub{color:var(--mut);margin-bottom:22px}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;min-width:520px}
+th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);font-weight:700}
+td.na{color:var(--line2)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:760px){.steps{grid-template-columns:1fr}}
+.step{padding:20px}
+.step b{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--acc);color:#fff;margin-bottom:10px}
+.step h3{font-size:18px;margin-bottom:6px}
+.step p{color:var(--mut);font-size:15px}
+.extra{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.extra .card{padding:18px}
+.extra h3{font-size:17px}
+.extra .p{font-size:22px;font-weight:800;color:var(--acc);margin-top:6px}
+details{padding:16px 0;border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font-weight:700;font-size:17px}
+details p{margin-top:8px;color:var(--mut)}
+.cta{padding:28px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.cta h2{margin:0}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="index.html">🛞 Зимник<span>.</span></a>
+  <div class="navl"><a class="hide" href="index.html#prices">Цены</a><a href="kalkulyator.html">Калькулятор</a><a href="https://t.me/zimnik_demo_bot" target="_blank" rel="noopener">Telegram</a></div>
+</div></nav>
+
+<header class="wrap hero">
+  <div>
+    <h1>Переобуем к&nbsp;зиме <em>без очереди</em> по&nbsp;записи</h1>
+    <p class="lead">Смена колёс, перебортовка шин, хранение летнего комплекта до весны. Цену можно посчитать заранее, а записаться — в Telegram.</p>
+    <div class="demo" data-demo>Демо-проект: шиномонтаж вымышленный, цены учебные</div>
+    <div class="btns">
+      <a class="btn" href="kalkulyator.html">Посчитать цену</a>
+      <a class="btn ghost" id="tgHero" target="_blank" rel="noopener">Записаться в Telegram</a>
+    </div>
+  </div>
+  <svg class="art" viewBox="0 0 200 200" aria-hidden="true">
+    <circle cx="100" cy="100" r="92" fill="var(--ink)"/>
+    <circle cx="100" cy="100" r="92" fill="none" stroke="var(--line2)" stroke-width="2" stroke-dasharray="6 9"/>
+    <circle cx="100" cy="100" r="58" fill="var(--card2)"/>
+    <circle cx="100" cy="100" r="58" fill="none" stroke="var(--acc)" stroke-width="6"/>
+    <g fill="var(--line2)"><circle cx="100" cy="66" r="6"/><circle cx="132" cy="90" r="6"/><circle cx="120" cy="128" r="6"/><circle cx="80" cy="128" r="6"/><circle cx="68" cy="90" r="6"/></g>
+    <circle cx="100" cy="100" r="14" fill="var(--acc)"/>
+    <g stroke="var(--bg)" stroke-width="3" stroke-linecap="round" opacity=".55"><path d="M100 14v14M100 172v14M14 100h14M172 100h14M39 39l10 10M151 151l10 10M161 39l-10 10M49 151l-10 10"/></g>
+  </svg>
+</header>
+
+<section><div class="wrap">
+  <h2>Цены за 4 колеса</h2>
+  <p class="sub">С балансировкой. <span data-demo>Цены учебные — взяты из открытого прайса шиномонтажа, для демонстрации.</span></p>
+  <div class="card tbl"><table id="prices"></table></div>
+  <p class="sub" style="margin-top:14px">Точную цену назовёт мастер, когда посмотрит колёса. <a href="kalkulyator.html">Посчитать с допуслугами →</a></p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Ещё можем</h2>
+  <div class="extra" id="extra"></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Как записаться</h2>
+  <div class="steps">
+    <div class="card step"><b>1</b><h3>Посчитайте цену</h3><p>В калькуляторе выберите машину, радиус и что нужно сделать.</p></div>
+    <div class="card step"><b>2</b><h3>Оставьте заявку</h3><p>Прямо под ценой или в Telegram-боте — имя, телефон и удобное время.</p></div>
+    <div class="card step"><b>3</b><h3>Приезжайте ко времени</h3><p>Администратор перезвонит и подтвердит запись.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Частые вопросы</h2>
+  <details><summary>Чем смена колёс отличается от перебортовки?</summary><p>Смена колёс — когда зимние шины уже стоят на своих дисках: снимаем одни колёса, ставим другие и балансируем. Перебортовка — когда шины одни на один комплект дисков: снимаем шины с дисков, ставим другие, балансируем. Перебортовка дороже.</p></details>
+  <details><summary>Как узнать радиус?</summary><p>Он написан на боковине шины: в надписи вида 205/55 R16 радиус — R16.</p></details>
+  <details><summary>Можно оставить летние шины у вас?</summary><p>Да, хранение комплекта до следующего сезона — 4 000 ₽.</p></details>
+  <details><summary>Почему цена «ориентировочная»?</summary><p>Иногда нужна доплата: сорванная гайка, секретки, ремонт прокола. Мастер скажет заранее, до начала работы.</p></details>
+</div></section>
+
+<section><div class="wrap">
+  <div class="card cta"><h2>Сезон — очереди. Запишитесь заранее</h2>
+  <div class="btns" style="margin:0"><a class="btn" href="kalkulyator.html">Посчитать и записаться</a><a class="btn ghost" id="tgCta" target="_blank" rel="noopener">Telegram-бот</a></div></div>
+</div></section>
+<footer><div class="wrap">
+  <p><b>Шиномонтаж «Зимник» — демонстрационный проект</b> для портфолио. Такого шиномонтажа нет, адреса и телефона нет.</p>
+  <p>Цены учебные: из открытого прайса шиномонтажа «Шинкоff» (Санкт-Петербург, zoon.ru) и обзора цен на хранение шин (finuslugi.ru, 13.10.2026). Не являются публичной офертой.</p>
+  <p>Заявки с сайта и из бота приходят разработчику для проверки работы. <a href="politika.html">Политика обработки данных</a>.</p>
+</div></footer>
+
+<script>
+// =====================================================================
+// ДЕМО-ШИНОМОНТАЖ «ЗИМНИК» · ЦЕНЫ И РАСЧЁТ — ОДИН ФАЙЛ НА ДВОИХ
+// Читают и калькулятор (вставляется при сборке), и бот (пересчитывает сумму сам).
+// Цены УЧЕБНЫЕ: прайс шиномонтажа «Шинкоff» (СПб, zoon.ru) + хранение по finuslugi.ru.
+// Источники — istochniki-cen.md. Поменяли цену → пересобрать сайт и задеплоить бота.
+// =====================================================================
+const CONFIG = {
+  DEMO: true,         // плашка «цены учебные, для демонстрации»
+  LEAD_URL: "https://shina-zimnik-demo-bot.oa310524.workers.dev/lead",       // адрес бота для заявок, подставляется при сборке сайта
+  BOT: "https://t.me/zimnik_demo_bot",            // ссылка на бота, подставляется при сборке сайта
+
+  // тип машины
+  vehicle: [
+    { k: "car",   name: "Легковой" },
+    { k: "cross", name: "Кроссовер / паркетник" },
+    { k: "suv",   name: "Внедорожник / микроавтобус" },
+  ],
+  // радиус колеса
+  radius: [
+    { k: "r13", name: "R13–14" },
+    { k: "r15", name: "R15–16" },
+    { k: "r17", name: "R17–18" },
+    { k: "r20", name: "R20–22" },
+    { k: "r14_19", name: "R14–19" },   // для внедорожников в прайсе одна строка
+  ],
+  // что сделать с колёсами
+  service: [
+    { k: "swap",  name: "Сменить колёса на дисках", note: "снять-поставить и отбалансировать 4 колеса" },
+    { k: "mount", name: "Перебортовать шины",       note: "снять шины с дисков, поставить другие, отбалансировать 4 колеса" },
+  ],
+  // цены за 4 колеса, ₽ — только сочетания, которые есть в прайсе-источнике
+  price: {
+    swap: {
+      car:   { r13: 1200, r15: 1400, r17: 1600, r20: 2400 },
+      cross: {            r15: 1600, r17: 1800 },
+      suv:   { r14_19: 2200 },
+    },
+    mount: {
+      car:   { r13: 1800, r15: 2200, r17: 2600, r20: 4400 },
+      cross: {            r15: 2400, r17: 2800 },
+      suv:   { r14_19: 3400 },
+    },
+  },
+  // дополнительно
+  extras: [
+    { k: "storage", name: "Хранение шин до следующего сезона", price: 4000, per: "комплект" },
+    { k: "bags",    name: "Пакеты для колёс",                  price: 40,   per: "шт", qty: 4 },
+    { k: "valves",  name: "Новые вентили",                     price: 100,  per: "шт", qty: 4 },
+  ],
+  defaults: { vehicle: "car", radius: null, service: "swap", extras: [] },
+};
+
+// какие радиусы доступны для типа машины (остальные скрываются)
+function radiiFor(vehicle, C) {
+  return Object.keys((C.price.swap[vehicle]) || {});
+}
+
+// расчёт: цена из таблицы + допуслуги. Возвращает null, если сочетания нет в прайсе.
+function calc(s, C) {
+  const table = C.price[s.service] && C.price[s.service][s.vehicle];
+  if (!table) return null;
+  const base = table[s.radius];
+  if (!base) return null;                                    // радиус не выбран или такого в прайсе нет
+  const lines = [{ name: C.service.find((o) => o.k === s.service).name, sum: base }];
+  for (const k of s.extras || []) {
+    const e = C.extras.find((x) => x.k === k);
+    if (!e) return null;                                     // неизвестная допуслуга
+    lines.push({ name: e.name, sum: e.price * (e.qty || 1), qty: e.qty || 1, unit: e.price });
+  }
+  const total = lines.reduce((a, l) => a + l.sum, 0);
+  return { base, lines, total };
+}
+
+// таблица цен и допуслуги — из того же файла, что считает калькулятор
+const rub = (n) => n.toLocaleString("ru-RU") + " ₽";
+const cols = ["r13", "r15", "r17", "r20", "r14_19"];
+const head = `<tr><th>Машина / услуга</th>${cols.map((k) => `<th>${CONFIG.radius.find((r) => r.k === k).name}</th>`).join("")}</tr>`;
+let rows = "";
+for (const v of CONFIG.vehicle) for (const s of CONFIG.service) {
+  const t = CONFIG.price[s.k][v.k];
+  rows += `<tr><td>${v.name}<br><small style="color:var(--mut)">${s.name.toLowerCase()}</small></td>${cols.map((k) => t[k] ? `<td>${rub(t[k])}</td>` : `<td class="na">—</td>`).join("")}</tr>`;
+}
+document.getElementById("prices").innerHTML = head + rows;
+document.getElementById("extra").innerHTML = CONFIG.extras.map((e) =>
+  `<div class="card"><h3>${e.name}</h3><div class="p">${e.qty ? rub(e.price) + " / шт." : rub(e.price)}</div></div>`).join("") +
+  `<div class="card"><h3>Ремонт прокола</h3><div class="p">от ${rub(200)}</div></div>`;
+for (const id of ["tgHero", "tgCta"]) document.getElementById(id).href = CONFIG.BOT;
+document.querySelectorAll("[data-demo]").forEach((el) => (el.hidden = !CONFIG.DEMO));
+</script>
+</body>
+</html>
